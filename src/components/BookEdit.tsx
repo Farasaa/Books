@@ -1,17 +1,25 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import BooksContext from "./context/books"
 
 interface BookEditProps{
  book: {   
     id: number,
     title: string
  } 
- onEdit: (id:number, newTitle: string) => void
+ onSubmit: () => void
 }
 
 
-export default function BookEdit({book, onEdit}: BookEditProps){
+export default function BookEdit({book, onSubmit}: BookEditProps){
 
     const [titleEdit, setTitleEdit] = useState(book.title)
+    const booksEditContext = useContext(BooksContext)
+
+    if(!booksEditContext){
+        throw new Error("useContext must be used within a Provider")
+    }
+
+    const { editTitle } = booksEditContext
 
     function handleInputChange(event:React.ChangeEvent<HTMLInputElement>){
 
@@ -22,7 +30,8 @@ export default function BookEdit({book, onEdit}: BookEditProps){
 
     function handleSaveButton(event:React.FormEvent<HTMLFormElement>){
         event.preventDefault()
-        onEdit(book.id, titleEdit)
+        onSubmit()
+        editTitle(book.id, titleEdit)
     }
 
     return(

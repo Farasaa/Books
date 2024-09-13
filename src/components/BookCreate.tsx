@@ -1,14 +1,21 @@
-import { useState } from "react"
-
-interface BookCreation{
-    createBook: (title:string) => void
-}
+import { useState, useContext } from "react"
+import BooksContext from "./context/books"
 
 
 
-export default function BookCreate({createBook}: BookCreation){
+
+
+export default function BookCreate(){
 
     const [bookState, setBookState] = useState('')
+
+    const booksCreateContext = useContext(BooksContext);
+    
+    if (!booksCreateContext) {
+        throw new Error("useContext must be used within a Provider");
+    }
+
+    const { onCreate } = booksCreateContext
 
     function handleChange(event:React.ChangeEvent<HTMLInputElement>){
         setBookState(event.target.value)
@@ -16,7 +23,7 @@ export default function BookCreate({createBook}: BookCreation){
 
     function handleSubmit(event:React.FormEvent<HTMLFormElement>){
         event.preventDefault()
-        createBook(bookState)
+        onCreate(bookState)
         setBookState('')
     }
 

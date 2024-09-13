@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import BookEdit from "./BookEdit";
+import BooksContext from "./context/books";
+
 
 interface BookShowProps {
     book: {
         id: number;
         title: string;
     };
-    deleteBook: (id: number) => void;
-    onEdit: (id:number, newTitle: string) => void
+
+    
 }
 
 
 
-export default function BookShow({book, deleteBook , onEdit}: BookShowProps){
+export default function BookShow({book }: BookShowProps){
+    const bookShowContext = useContext(BooksContext)
+
+    if(!bookShowContext){
+
+        throw new Error("useContext must be used within a Provider")
+    }
+
+    const {deleteBook} = bookShowContext
 
     const [showEdit, setShowEdit] = useState(false)
 
@@ -24,12 +34,22 @@ export default function BookShow({book, deleteBook , onEdit}: BookShowProps){
         deleteBook(book.id)
     }
 
+    function handleSubmit(){
+       
+        setShowEdit(false)
+         
+    }
+
 
 
     return(
      
         <div className="book-show">
-             {showEdit ? book.title : <BookEdit onEdit={onEdit} book= {book} /> }
+            <img 
+            alt="books"
+            src={`https://picsum.photos/seed/${book.id}/300/200`}
+            />
+             {showEdit ? (<BookEdit onSubmit={handleSubmit} book= {book} /> ) : (book.title)}
             <div className="actions">
                 <button onClick={handleEditButton} className="edit">
                     Edit

@@ -1,26 +1,30 @@
 import BookShow from "./BookShow"
-
-interface BooksListType{
-    id: number,
-    title: string,
-   
-}
-
-interface BookType{
-    books: BooksListType[]
-    deleteBook: (id:number) => void
-    onEdit:(id: number, newTitle: string) => void
-}
+import { useContext } from "react"
+import BooksContext from "./context/books"
 
 
-export default function BookList({books, deleteBook , onEdit}:BookType){
 
+export default function BookList(){
+
+    const bookListContext = useContext(BooksContext)
+
+    if(!bookListContext){
+
+        throw new Error("useContext must be used within a Provider")
+    }
+
+    const {  books } = bookListContext
+    
     const renderBooks = books.map((book) =>{
 
-        return <BookShow key={book.id} book={book} onEdit={onEdit} deleteBook={deleteBook}/>
+        return <BookShow key={book.id} book={book} />
     })
 
     return(
-        <div className="book-list">{renderBooks}</div>
+        <div className="book-list">
+            
+            
+            {renderBooks}
+            </div>
     )
 }
