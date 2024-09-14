@@ -1,12 +1,3 @@
 {
-  "books": [
-    {
-      "title": "Saad",
-      "id": 2
-    },
-    {
-      "title": "laila ola",
-      "id": 3
-    }
-  ]
+  "books": []
 }

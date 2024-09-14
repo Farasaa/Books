@@ -62,7 +62,7 @@ function Provider({children}: ProviderProps){
     
     async function deleteBook(id: number){
 
-        const response = await axios.delete(`http://localhost:3001/books/${id}`)
+        await axios.delete(`http://localhost:3001/books/${id}`)
 
         const deleteBook = books.filter((book) =>{
             return book.id !== id
