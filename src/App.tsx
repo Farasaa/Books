@@ -17,11 +17,11 @@ export default function App(){
     }
 
 
-    const { fetchBooks } = booksContext
+    const { fetchBookCallback } = booksContext
 
     useEffect(() =>{
-        fetchBooks()
-    }, [])
+        fetchBookCallback()
+    }, [fetchBookCallback])
 
 
 

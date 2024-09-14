@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
+import { createContext, useState, ReactNode, useCallback } from "react";
 import axios from "axios";
 
 interface BooksContextType{
@@ -7,6 +7,7 @@ interface BooksContextType{
     editTitle: (id: number, newTitle: string) => void,
     deleteBook: (id: number) => void,
     onCreate: (title:string) => void
+    fetchBookCallback: () => void
 
 }
 
@@ -25,6 +26,8 @@ interface ProviderProps {
 function Provider({children}: ProviderProps){
     const [books, setBooks] = useState<Book[]>([])
 
+    
+
 
     async function fetchBooks(){
         const response = await axios.get('http://localhost:3001/books')
@@ -32,7 +35,8 @@ function Provider({children}: ProviderProps){
         setBooks(response.data)
     }
 
- 
+    
+    const fetchBookCallback = useCallback(fetchBooks, [])
   
 
     async function editTitle(id:number, newTitle:string){
@@ -84,7 +88,8 @@ function Provider({children}: ProviderProps){
         fetchBooks,
         onCreate,
         editTitle,
-        deleteBook
+        deleteBook,
+        fetchBookCallback
         
     }
 
